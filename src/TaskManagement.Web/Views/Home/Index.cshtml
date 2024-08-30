@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Task Management Application</h1>
+    <div class="card-body container">
+        <div class="button-wrapper">
+            <button class="btn-lg btn-primary" onclick="GotoAssignTasksPage()">Assign Tasks</button>
+            <button class="btn-lg btn-info" onclick="GotoTaskViewPage()">Task View</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function GotoAssignTasksPage() {
+        location.href = '/AssignTask/Index';
+    }
+
+    function GotoTaskViewPage() {
+        location.href = '/ViewTasks/Index';
+    }
+</script>

@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Task View";
+}
+@using TaskManagement.CommonContracts.ViewModels;
+@model DisplayTasksViewModel
+
+<div class="col-sm-12 row">
+    <h1 class="col-sm-7">View Tasks</h1>
+    <a href="/Home/Index" class="align-self-lg-center col-sm-5">Back</a>
+</div>
+
+<form class="col-sm-12 pt-4">
+    <div class="col-sm-12 form-group row">
+        <label for="project" class="col-sm-2 required">Filter by Project</label>
+        @Html.DropDownList("project", new SelectList(Model.Projects, "Id", "Name", Model.ProjectId), "All projects", new { @class = "col-sm-5 form-control", @onchange = "ViewTasksByProject(this)" })
+    </div>
+    <div class="col-sm-12 form-group">
+        @if (Model.Tasks.Count != 0)
+        {
+            @for (int taskIndex = 0; taskIndex < Model.Tasks.Count; taskIndex++)
+            {
+                <div class="col-sm-12 form-group">
+                    <label><b>Task Description:</b> @Model.Tasks[taskIndex].Description</label><br />
+                    <label><b>Task Start Date:</b> @Model.Tasks[taskIndex].StartDate.ToShortDateString()</label><br />
+                    <label><b>Task End Date:</b> @Model.Tasks[taskIndex].DueDate.ToShortDateString()</label><br />
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">MID</th>
+                                <th scope="col">Employee Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int employeeIndex = 0; employeeIndex < Model.Tasks[taskIndex].TasksEmployees.Count; employeeIndex++)
+                            {
+                                if (Model.Tasks[taskIndex].Id == Model.Tasks[taskIndex].TasksEmployees[employeeIndex].TaskId)
+                                {
+                                    <tr>
+                                        <td>@Model.Tasks[taskIndex].TasksEmployees[employeeIndex].Employee.Id</td>
+                                        <td>@Model.Tasks[taskIndex].TasksEmployees[employeeIndex].Employee.Name</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        }
+        else
+        {
+            <label class="col-sm-12 text-danger">No tasks available under this project.</label>
+        }
+    </div>
+</form>
+<script>
+    function ViewTasksByProject(input) {
+        if (input.value !== "") {
+            location.href = '/ViewTasks/ViewTasksByProject/' + input.value;
+        }
+        else {
+            location.href = '/ViewTasks/Index';
+        }
+    }
+</script>
